@@ -1,0 +1,29 @@
+name: myka
+version: "0.1"
+author: glyph <gnomad@cryptolab.net>
+about: Culture library & cultivation log for tracking the expansion of mycelia
+args:
+    - list:
+        short: l
+        multiple: false
+        help: List all cultures in library
+subcommands:
+    - add:
+        about: Add a new culture to the library
+        args:
+            - GENUS:
+                help: Set the genus name of the culture being added
+                required: true
+                index: 1
+            - SPECIES:
+                help: Set the species name of the culture being added
+                required: true
+                index: 2
+            - STRAIN:
+                help: Set the strain name of the culture being added
+                required: true
+                index: 3
+            - SOURCE:
+                help: Set the source of the culture being added
+                required: true
+                index: 4
