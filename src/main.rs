@@ -1,65 +1,50 @@
-#[macro_use]
-extern crate clap;
-extern crate hypercore;
+use structopt::StructOpt;
 
-use std::{path::PathBuf, str};
-
-use clap::App;
-use hypercore::Feed;
-use serde::Serialize;
-
-#[derive(Debug, Serialize)]
+/*
+// Add a culture to the library
+#[derive(StructOpt)]
 struct Culture {
-    genus: String,
-    species: String,
-    strain: String,
-    source: String,
+    #[structopt(short = "a", long = "add")]
+    genus: String, // Ganoderma
+    #[structopt(short = "a", long = "add")]
+    species: String, // lucidum
+    #[structopt(short = "a", long = "add")]
+    strain: String, // Aleon1
+    #[structopt(short = "a", long = "add")]
+    source: String, // FungiPerfecti
+    #[structopt(short = "a", long = "add")]
+    id: String, // GLAL001
+}*/
+
+// Application
+#[derive(Debug, StructOpt)]
+struct Cli {
+    #[structopt(subcommand)]
+    command: Command,
 }
 
-fn main() {
-    let yaml = load_yaml!("cli.yml");
-    let matches = App::from_yaml(yaml).get_matches();
+#[derive(Debug, StructOpt)]
+enum Command {
+    #[structopt(name = "add")]
+    /// Add culture to Library.
+    Add { genus: String, species: String, strain: String, source: String },
 
-    let path = PathBuf::from("./cultures.db");
-    let mut feed = Feed::open(&path).unwrap();
+    #[structopt(name = "list")]
+    /// List cultures in Library.
+    List,
+}
 
-    if let Some(matches) = matches.subcommand_matches("add") {
-        let genus = matches.value_of("GENUS").unwrap();
-        let species = matches.value_of("SPECIES").unwrap();
-        let strain = matches.value_of("STRAIN").unwrap();
-        let source = matches.value_of("SOURCE").unwrap();
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args = Cli::from_args();
+    
+    match args.command {
+        Command::Add { genus, species, strain, source } => {
+            println!("Adding culture: {} {} {} {}", &genus, &species, &strain, &source);
+        }
+        Command::List => {
+            println!("Cultures");
+        }
+    }
 
-        let culture = Culture {
-            genus: genus.to_string(),
-            species: species.to_string(),
-            strain: strain.to_string(),
-            source: source.to_string(),
-        };
-
-        let culture_json = serde_json::to_string(&culture).unwrap();
-        let culture_bytes = culture_json.into_bytes();
-
-        feed.append(&culture_bytes).unwrap();
-    };
-
-    let c = feed.get(0).unwrap().unwrap();
-    let c_str = String::from_utf8(c);
-
-    println!("{}", c_str.unwrap());
-
-    /*
-        if matches.is_present("list") {
-            for i in 0..feed.len() {
-                println!("{}: {:?}", i, feed.get(i).unwrap().unwrap());
-            }
-        };
-    */
-    /*let feed.get(0).unwrap().unwrap();
-    let species = feed.get(1).unwrap().unwrap();
-
-    println!(
-        "{} {}",
-        str::from_utf8(&genus).unwrap(),
-        str::from_utf8(&species).unwrap()
-    );*/
+    Ok(())
 }
