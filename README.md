@@ -45,6 +45,6 @@ The eventual goal is to make `myka` truly mycelial by leveraging p2p sociotechno
 
 **Hypercore + Hyperswarm**
 
-Back-up your virtual library and cultivation logs with peers.
-Share your virtual library with peers to facilitate trade. 
+Back-up your virtual library and cultivation logs with peers.  
+Share your virtual library with peers to facilitate trade.   
 Share media and substrate recipes with peers.
