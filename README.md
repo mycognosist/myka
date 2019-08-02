@@ -30,9 +30,9 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
-    add     Add culture to Library.
+    add     Add culture to Library
     help    Prints this message or the help of the given subcommand(s)
-    list    List cultures in Library.
+    list    List cultures in Library
 ```
 
 ### Vision

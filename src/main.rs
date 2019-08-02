@@ -1,3 +1,6 @@
+extern crate hypercore;
+
+use hypercore::Feed;
 use structopt::StructOpt;
 
 /*
@@ -26,23 +29,28 @@ struct Cli {
 #[derive(Debug, StructOpt)]
 enum Command {
     #[structopt(name = "add")]
-    /// Add culture to Library.
+    /// Add culture to Library
     Add { genus: String, species: String, strain: String, source: String },
 
     #[structopt(name = "list")]
-    /// List cultures in Library.
+    /// List cultures in Library
     List,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::from_args();
     
+    let mut feed = Feed::open("./cultures")?;
+
     match args.command {
         Command::Add { genus, species, strain, source } => {
-            println!("Adding culture: {} {} {} {}", &genus, &species, &strain, &source);
+            let c = format!("{} {} {} {}", &genus, &species, &strain, &source);
+            feed.append(&c.into_bytes())?;
         }
         Command::List => {
-            println!("Cultures");
+            for i in 0..feed.len() {
+                println!("{:?}", feed.get(i))
+            }
         }
     }
 
