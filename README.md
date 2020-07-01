@@ -4,7 +4,7 @@ A culture library & cultivation log for tracking the expansion of mycelia.
 
 Rust CLI tool.
 
-_[ WIP ]._
+**Note:** This repo is no longer maintained. Visit the [myka repo on Sourcehut](https://git.sr.ht/~glyph/myka) for latest developments. 
 
 ### Installation
 
